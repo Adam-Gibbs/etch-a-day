@@ -1,15 +1,14 @@
 <template>
   <div style="font-size: 0">
     <div
-      class="rounded-2xl mx-auto my-2 overflow-hidden"
-      :style="`height: ${containerWidth}px; width: ${containerWidth}px;`"
+      class="rounded-2xl mx-auto my-2 overflow-hidden grid grid-cols-32 w-full max-w-lg gap-0"
     >
       <div
         v-for="n in squareNumber ** 2"
         :key="n"
         :ref="n.toString()"
-        class="border-none m-0 p-0 bg-black inline-block"
-        :style="`height: ${squareWidth}px; width: ${squareWidth}px; opacity: 0.1;`"
+        class="h-4 border-none m-0 p-0 bg-black inline-block"
+        :style="`opacity: 0.1;`"
       />
     </div>
   </div>
