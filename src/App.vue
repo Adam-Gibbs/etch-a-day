@@ -13,9 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
       />
     </head>
-    <body
-      class="antialiased min-h-screen bg-body text-body font-body overflow-y-none"
-    >
+    <body class="antialiased bg-body text-body font-body overflow-y-none">
       <router-view />
     </body>
   </html>
