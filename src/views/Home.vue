@@ -1,7 +1,7 @@
 <template>
-  <div style="font-size: 0">
+  <div class="container flex justify-center h-full" style="font-size: 0">
     <div
-      class="transform rounded-2xl mx-auto my-2 overflow-hidden opa grid grid-cols-32 w-full sm:max-w-lg max-w-xs gap-0"
+      class="transform rounded-2xl ml-auto my-2 overflow-hidden grid grid-cols-32 w-full sm:max-w-lg max-w-xs gap-0"
       :class="disabled ? (shake ? '-rotate-1' : 'rotate-1') : ''"
     >
       <div
@@ -10,6 +10,19 @@
         :ref="n.toString()"
         class="sm:h-4 h-2.5 border-none m-0 p-0 bg-black inline-block"
         :style="`opacity: 0.1;`"
+      />
+    </div>
+
+    <div class="mr-auto w-full">
+      <label for="y-axis">Y Axis</label>
+      <input
+        :disabled="disabled"
+        type="range"
+        class="h-full w-1/2 transform rotate-90"
+        :max="squareNumber - 1"
+        :min="0"
+        v-model.number="yaxis"
+        id="y-axis"
       />
     </div>
   </div>
@@ -25,21 +38,11 @@
     <input
       :disabled="disabled"
       type="range"
-      class="w-2/6 flex mx-auto range range-lg range-accent"
+      class="w-full sm:max-w-lg flex mx-auto"
       :max="squareNumber"
       :min="1"
       v-model.number="xaxis"
       id="x-axis"
-    />
-    <label for="y-axis">Y Axis</label>
-    <input
-      :disabled="disabled"
-      type="range"
-      class="w-2/6 flex mx-auto range range-lg range-accent"
-      :max="squareNumber - 1"
-      :min="0"
-      v-model.number="yaxis"
-      id="y-axis"
     />
   </div>
 </template>
