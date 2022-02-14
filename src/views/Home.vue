@@ -191,7 +191,6 @@ export default defineComponent({
     resetSquare(square) {
       if (this.checkSquare(square)) {
         try {
-          this.$refs[square.toString()][0].classList.remove("bg-red-500");
           this.$refs[square.toString()][0].classList.add("bg-black");
         } catch (e) {
           console.log(e);
@@ -202,7 +201,6 @@ export default defineComponent({
     highlightSquare(square) {
       if (this.checkSquare(square)) {
         try {
-          this.$refs[square.toString()][0].classList.add("bg-red-500");
           this.$refs[square.toString()][0].classList.remove("bg-black");
         } catch (e) {
           console.log(e);
