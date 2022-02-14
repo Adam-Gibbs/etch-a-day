@@ -1,7 +1,7 @@
 <template>
   <div style="font-size: 0">
     <div
-      class="transform rounded-2xl mx-auto my-2 overflow-hidden grid grid-cols-32 w-full sm:max-w-lg max-w-xs gap-0"
+      class="transform rounded-2xl mx-auto my-2 overflow-hidden opa grid grid-cols-32 w-full sm:max-w-lg max-w-xs gap-0"
       :class="disabled ? (shake ? '-rotate-1' : 'rotate-1') : ''"
     >
       <div
@@ -25,7 +25,7 @@
     <input
       :disabled="disabled"
       type="range"
-      class="w-2/6 flex mx-auto bg-red-500 focus:outline-none focus:ring-0 focus:shadow-none"
+      class="w-2/6 flex mx-auto range range-lg range-accent"
       :max="squareNumber"
       :min="1"
       v-model.number="xaxis"
@@ -35,7 +35,7 @@
     <input
       :disabled="disabled"
       type="range"
-      class="w-2/6 flex mx-auto bg-blue-500 focus:outline-none focus:ring-0 focus:shadow-none"
+      class="w-2/6 flex mx-auto range range-lg range-accent"
       :max="squareNumber - 1"
       :min="0"
       v-model.number="yaxis"
@@ -51,7 +51,7 @@ export default defineComponent({
   data() {
     return {
       squareNumber: 32,
-      currentSquare: 0,
+      currentSquare: 1,
       disabled: false,
       interval: null,
       shake: false,
@@ -64,14 +64,17 @@ export default defineComponent({
     this.interval = setInterval(function () {
       self.colourIn(self.currentSquare);
     }, 500);
+    this.highlightSquare(1);
   },
   watch: {
-    currentSquare() {
+    currentSquare(previous, target) {
       const self = this;
       this.colourIn(this.currentSquare);
       this.interval = setInterval(function () {
         self.colourIn(self.currentSquare);
       }, 500);
+      this.highlightSquare(previous);
+      this.resetSquare(target);
     },
     xaxis(previous, target) {
       if (!this.disabled) {
@@ -183,6 +186,26 @@ export default defineComponent({
 
     calculateSquare(x, y) {
       return x + y * this.squareNumber;
+    },
+
+    resetSquare(square) {
+      if (this.checkSquare(square)) {
+        try {
+          this.$refs[square.toString()][0].classList.add("bg-black");
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    },
+
+    highlightSquare(square) {
+      if (this.checkSquare(square)) {
+        try {
+          this.$refs[square.toString()][0].classList.remove("bg-black");
+        } catch (e) {
+          console.log(e);
+        }
+      }
     },
   },
 });
