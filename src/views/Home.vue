@@ -1,50 +1,49 @@
 <template>
-  <div class="container flex justify-center h-full" style="font-size: 0">
-    <div
-      class="transform rounded-2xl ml-auto my-2 overflow-hidden grid grid-cols-32 w-full sm:max-w-lg max-w-xs gap-0"
-      :class="disabled ? (shake ? '-rotate-1' : 'rotate-1') : ''"
-    >
+  <section class="">
+    <div class="flex" style="font-size: 0">
       <div
-        v-for="n in squareNumber ** 2"
-        :key="n"
-        :ref="n.toString()"
-        class="sm:h-4 h-2.5 border-none m-0 p-0 bg-black inline-block"
-        :style="`opacity: 0.1;`"
-      />
-    </div>
+        class="flex-none transform rounded-2xl my-2 overflow-hidden grid grid-cols-32 w-full sm:max-w-lg max-w-xs gap-0"
+      >
+        <div
+          v-for="n in squareNumber ** 2"
+          :key="n"
+          :ref="n.toString()"
+          class="sm:h-4 h-2.5 border-none m-0 p-0 bg-black"
+          :style="`opacity: 0.1;`"
+        />
+      </div>
 
-    <div class="mr-auto w-full">
-      <label for="y-axis">Y Axis</label>
+      <div class="">
+        <input
+          :disabled="disabled"
+          type="range"
+          class="sm:w-128 w-80 h-full sm:-mx-56 -mx-32 transform rotate-90"
+          :max="squareNumber - 1"
+          :min="0"
+          v-model.number="yaxis"
+          id="y-axis"
+        />
+      </div>
+    </div>
+    <div class="ml-auto w-full">
       <input
         :disabled="disabled"
         type="range"
-        class="h-full w-1/2 transform rotate-90"
-        :max="squareNumber - 1"
-        :min="0"
-        v-model.number="yaxis"
-        id="y-axis"
+        class="w-full sm:max-w-lg max-w-xs h-full"
+        :max="squareNumber"
+        :min="1"
+        v-model.number="xaxis"
+        id="x-axis"
       />
     </div>
-  </div>
+  </section>
   <button
-    class="mx-auto px-10 py-2 flex border-2 rounded-lg hover:bg-gray-200"
+    class="sm:ml-48 ml-24 px-10 py-2 flex border-2 rounded-lg hover:bg-gray-200"
     :disabled="disabled"
     @click="reset"
   >
     New
   </button>
-  <div class="flex pt-1">
-    <label for="x-axis">X Axis</label>
-    <input
-      :disabled="disabled"
-      type="range"
-      class="w-full sm:max-w-lg flex mx-auto"
-      :max="squareNumber"
-      :min="1"
-      v-model.number="xaxis"
-      id="x-axis"
-    />
-  </div>
 </template>
 
 <script>
@@ -55,9 +54,9 @@ export default defineComponent({
     return {
       squareNumber: 32,
       currentSquare: 1,
+      colourTime: 500,
       disabled: false,
       interval: null,
-      shake: false,
       xaxis: 1,
       yaxis: 0,
     };
@@ -65,17 +64,18 @@ export default defineComponent({
   mounted() {
     const self = this;
     this.interval = setInterval(function () {
-      self.colourIn(self.currentSquare);
-    }, 500);
+      self.colourIn();
+    }, this.colourTime);
     this.highlightSquare(1);
   },
   watch: {
     currentSquare(previous, target) {
       const self = this;
-      this.colourIn(this.currentSquare);
+      this.colourIn();
+      clearInterval(this.interval);
       this.interval = setInterval(function () {
-        self.colourIn(self.currentSquare);
-      }, 500);
+        self.colourIn();
+      }, this.colourTime);
       this.highlightSquare(previous);
       this.resetSquare(target);
     },
@@ -125,8 +125,8 @@ export default defineComponent({
       }, 30);
 
       this.interval = setInterval(function () {
-        self.colourIn(self.currentSquare);
-      }, 500);
+        self.colourIn();
+      }, this.colourTime);
     },
 
     clearSquare(square) {
@@ -153,6 +153,9 @@ export default defineComponent({
     },
 
     colourIn(square) {
+      if (square === undefined) {
+        square = this.currentSquare;
+      }
       if (this.checkSquare(square)) {
         try {
           let currentOpacity = +this.$refs[square.toString()][0].style.opacity;
