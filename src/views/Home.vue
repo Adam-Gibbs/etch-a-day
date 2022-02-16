@@ -1,5 +1,5 @@
 <template>
-  <section class="">
+  <section class="mx-auto">
     <div class="flex" style="font-size: 0">
       <div
         class="flex-none transform rounded-2xl my-2 overflow-hidden grid grid-cols-32 w-full sm:max-w-lg max-w-xs gap-0"
